@@ -21,7 +21,7 @@ export default function SingleInvite() {
                         <AudioPlayer />
                     </div>
                 </div>
-                <div className="flex flex-col items-center gap-4 px-5 py-10">
+                <div className="flex flex-col items-center gap-4 px-5 py-10 text-black">
                     <div>
                         <TitleItalic>{`Hola ${guest?.first_name},`}</TitleItalic>
                         <TitleItalic>
