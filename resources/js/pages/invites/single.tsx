@@ -8,8 +8,8 @@ export default function SingleInvite() {
 
                 <div className="flex z-10 flex-col items-center text-white">
                     <h5 className="text-3xl">Wedding Day</h5>
-                    <h4 className="text-3xl">13 | 09 | 25</h4>
-                    <span className="my-2"></span>
+                    <h4 className="text-3xl">13/09/25</h4>
+                    <span className="my-2">YAZMIN & BRUNO</span>
                     <h3 className="text-4xl font-medium">Yazmin & Bruno</h3>
                 </div>
                 {/* <div className="flex z-10 flex-col items-center text-center text-white">
