@@ -50,9 +50,9 @@ class GuestController extends Controller
             'event' => $guest->event,
             'appUrl' => config('app.url'),
             'meta' => [
-                'title' => "Invitación para {$guest->first_name}",
+                'title' => "Yaz & Bruno - Invitación para {$guest->first_name}",
                 'description' => 'Acompáñanos en un día muy especial: nuestra boda el 13 de Septiembre de 2025.',
-                'image' => asset('cover_1.jpg'),
+                'image' => asset('meta_cover.webp'),
                 'url' => route('invites.guests', $guest->id),
             ],
         ]);
