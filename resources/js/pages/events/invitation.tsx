@@ -6,12 +6,16 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Guest } from '@/types/guest';
-import { useForm, usePage } from '@inertiajs/react';
+import { Head, useForm, usePage } from '@inertiajs/react';
 import { Check, Mail } from 'lucide-react';
 import { FormEventHandler, useEffect, useRef, useState } from 'react';
 
 export default function SingleInvite() {
     const { guest } = usePage<{ guest: Guest }>().props;
+    const { appUrl } = usePage<{ appUrl: string }>().props;
+    const invitationUrl = `${appUrl}/invitation/guests/${guest.id}`;
+    const image = `${appUrl}/cover_1.jpg`;
+
     const { post, setData, errors } = useForm();
     const [confirmations, setConfirmations] = useState<{ id: number, is_attending: boolean }[]>([]);
     const [open, setOpen] = useState(false);
@@ -72,6 +76,7 @@ export default function SingleInvite() {
 
     return (
         <>
+            <HeaderTags guest={guest} invitationUrl={invitationUrl} cover={image} />
             <main className="bg-[#fffefa]">
                 <div className="relative flex min-h-[80dvh] flex-col justify-between overflow-hidden rounded-b-4xl bg-[url('/cover_1.jpg')] bg-cover bg-center p-10">
                     <div className="absolute inset-0 z-0 bg-gradient-to-b from-black via-transparent to-black opacity-70" />
@@ -246,3 +251,26 @@ const GradientImage = ({ src, vertical }: { src: string; vertical?: boolean }) =
         </div>
     );
 };
+
+const HeaderTags = ({ guest, invitationUrl, cover }: { guest: Guest; invitationUrl: string; cover: string; }) => {
+
+    return (
+        <Head>
+            <title>Invitación para {guest.first_name}</title>
+            <meta name="description" content="Acompáñanos en un día muy especial: nuestra boda el 13 de Septiembre de 2025." />
+
+            {/* Open Graph para WhatsApp / Facebook */}
+            <meta property="og:title" content="Yazmin & Bruno - Invitación de boda" />
+            <meta property="og:description" content="Estás cordialmente invitado a nuestra boda. ¡Confirma tu asistencia!" />
+            <meta property="og:image" content={cover} />
+            <meta property="og:url" content={invitationUrl} />
+            <meta property="og:type" content="website" />
+
+            {/* Para Twitter */}
+            <meta name="twitter:card" content="summary_large_image" />
+            <meta name="twitter:title" content="Yazmin & Bruno - Invitación de boda" />
+            <meta name="twitter:description" content="Estás cordialmente invitado a nuestra boda. ¡Confirma tu asistencia!" />
+            <meta name="twitter:image" content={cover} />
+        </Head>
+    )
+}
