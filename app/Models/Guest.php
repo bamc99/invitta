@@ -9,6 +9,14 @@ class Guest extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'event_id',
+        'parent_guest_id',
+        'first_name',
+        'last_name',
+        'phone',
+    ];
+
     // event relation
     public function event()
     {

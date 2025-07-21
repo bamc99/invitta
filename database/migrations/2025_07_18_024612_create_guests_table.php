@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('guests', function (Blueprint $table) {
             $table->id();
             $table->string('first_name');
-            $table->string('last_name');
-            $table->string('email')->unique();
-            $table->string('phone')->unique();
+            $table->string('last_name')->nullable();
+            $table->string('email')->nullable();
+            $table->string('phone')->nullable();
             $table->foreignId('event_id')->constrained()->onDelete('cascade');
             $table->foreignId('parent_guest_id')->nullable()->constrained('guests')->onDelete('cascade');
             $table->boolean('is_attending')->nullable(); 

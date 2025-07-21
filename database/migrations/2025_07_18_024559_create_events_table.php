@@ -14,12 +14,12 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->text('description');
-            $table->date('start_date');
-            $table->date('end_date');
-            $table->time('start_time');
-            $table->time('end_time');
-            $table->string('maps_location');
+            $table->text('description')->nullable();
+            // $table->date('start_date');
+            // $table->date('end_date');
+            // $table->time('start_time');
+            // $table->time('end_time');
+            // $table->string('maps_location');
             $table->enum('status', ['draft', 'published'])->default('draft');
             $table->timestamps();
         });

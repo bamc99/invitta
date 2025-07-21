@@ -13,9 +13,8 @@ import { FormEventHandler, useEffect, useRef, useState } from 'react';
 export default function SingleInvite() {
     const { guest } = usePage<{ guest: Guest }>().props;
     const { appUrl } = usePage<{ appUrl: string }>().props;
-    // const appUrl = 'http://localhost';
     const invitationUrl = `${appUrl}/invitation/guests/${guest.id}`;
-    const image = `${appUrl}/cover_1.jpg`;
+    const image = `${appUrl}/cover_resized.jpg`;
 
     const { post, setData, errors } = useForm();
     const [confirmations, setConfirmations] = useState<{ id: number, is_attending: boolean }[]>([]);
@@ -177,7 +176,7 @@ export default function SingleInvite() {
                                                                     checked={
                                                                         confirmations.find((c) => c.id === guest.id)?.is_attending ?? false
                                                                     }
-                                                                    className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-destructive"
+                                                                    className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
                                                                     id={`confirm-${guest.id}`}
                                                                     onCheckedChange={(checked) =>
                                                                         handleCheckboxChange(guest.id, !!checked)
@@ -198,7 +197,7 @@ export default function SingleInvite() {
                                                                         checked={
                                                                             confirmations.find((c) => c.id === guest.id)?.is_attending ?? false
                                                                         }
-                                                                        className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-destructive"
+                                                                        className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
                                                                         id={`confirm-${guest.id}`}
                                                                         onCheckedChange={(checked) =>
                                                                             handleCheckboxChange(guest.id, !!checked)

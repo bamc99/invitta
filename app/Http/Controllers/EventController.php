@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
 use App\Models\Event;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class EventController extends Controller
@@ -71,5 +72,50 @@ class EventController extends Controller
     public function destroy(Event $event)
     {
         //
+    }
+
+    public function createFromJson(Request $request){
+        $data = $request->validate([
+            'event_title' => 'required|string',
+            'event_description' => 'required|string',
+            'guests' => 'required|array',
+            'guests.*.first_name' => 'required|string',
+            'guests.*.last_name' => 'string',
+            'guests.*.phone' => 'required|string',
+            'guests.*.childs' => 'array',
+            'guests.*.childs.*.first_name' => 'required|string',
+            'guests.*.childs.*.last_name' => 'required|string',
+            'guests.*.childs.*.phone' => 'string',
+        ]);
+
+        $event = Event::create([
+            'title' => $data['event_title'],
+            'description' => $data['event_description'],
+        ]);
+
+        foreach ($data['guests'] as $guest) {
+            $parent = $event->guests()->create([
+                'first_name' => $guest['first_name'],
+                'last_name' => $guest['last_name'],
+                'phone' => $guest['phone'],
+            ]);
+
+            if (isset($guest['childs'])) {
+                foreach ($guest['childs'] as $child) {
+                    $parent->guests()->create([
+                        'event_id' => $event->id,
+                        'first_name' => $child['first_name'],
+                        'last_name' => $child['last_name'],
+                        'phone' => $child['phone'] ?? null,
+                    ]);
+                }
+            }
+        }
+
+        // api response
+        return response()->json([
+            'message' => 'Event created successfully',
+            'event' => $event,
+        ], 201);
     }
 }
