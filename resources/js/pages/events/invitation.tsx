@@ -96,6 +96,7 @@ export default function SingleInvite() {
                         </TitleItalic>
                     </div>
                     <div>
+                        <br />
                         <TitleSans>Sábado, 13 de Septiembre, 2025</TitleSans>
                         <GradientImage src="/images/anillos.jpg" />
                         <TitleSans>Ceremonia Civil: 3:30 PM</TitleSans>
@@ -109,6 +110,12 @@ export default function SingleInvite() {
                     <div>
                         <GradientImage src="/images/vestimenta.png" vertical />
                         <TitleSans>Código de vestimenta: Formal</TitleSans>
+                    </div>
+                    <div>
+                        <GradientImage src="/images/after.png" vertical/>
+                        <div className='my-2'></div>
+                        <TitleSans>After Party</TitleSans> 
+                        <TitleItalic>La ubicación será compartida próximamente.</TitleItalic>
                     </div>
                     <div className='mt-5'>
                         <div className="text-center">
