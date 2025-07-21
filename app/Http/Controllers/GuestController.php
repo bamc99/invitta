@@ -48,7 +48,13 @@ class GuestController extends Controller
         return Inertia::render('events/invitation', [
             'guest' => $guest,
             'event' => $guest->event,
-            'appUrl' => config('app.url')
+            'appUrl' => config('app.url'),
+            'meta' => [
+                'title' => "Invitación para {$guest->first_name}",
+                'description' => 'Acompáñanos en un día muy especial: nuestra boda el 13 de Septiembre de 2025.',
+                'image' => asset('cover_1.jpg'),
+                'url' => route('invites.guests', $guest->id),
+            ],
         ]);
     }
 
