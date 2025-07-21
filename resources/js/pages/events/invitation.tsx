@@ -13,6 +13,7 @@ import { FormEventHandler, useEffect, useRef, useState } from 'react';
 export default function SingleInvite() {
     const { guest } = usePage<{ guest: Guest }>().props;
     const { appUrl } = usePage<{ appUrl: string }>().props;
+    // const appUrl = 'http://localhost';
     const invitationUrl = `${appUrl}/invitation/guests/${guest.id}`;
     const image = `${appUrl}/cover_1.jpg`;
 
@@ -35,8 +36,6 @@ export default function SingleInvite() {
     };
     const initialized = useRef(false);
     useEffect(() => {
-        console.log('useeffect fired');
-        console.log('status', initialized);
         if (!initialized.current && guest) {
             const updatedConfirmations = [
                 { id: guest.id, is_attending: guest?.is_attending ?? false },
@@ -255,8 +254,7 @@ const GradientImage = ({ src, vertical }: { src: string; vertical?: boolean }) =
 const HeaderTags = ({ guest, invitationUrl, cover }: { guest: Guest; invitationUrl: string; cover: string; }) => {
 
     return (
-        <Head>
-            <title>Invitación para {guest.first_name}</title>
+        <Head title={`Invitación para ${guest.first_name}`}>
             <meta name="description" content="Acompáñanos en un día muy especial: nuestra boda el 13 de Septiembre de 2025." />
 
             {/* Open Graph para WhatsApp / Facebook */}
