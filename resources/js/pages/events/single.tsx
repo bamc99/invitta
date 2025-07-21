@@ -9,6 +9,7 @@ import { Guest } from "@/types/guest";
 import { toast } from "sonner";
 import { Card, CardContent } from "@/components/ui/card";
 import { ExternalLink } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -43,7 +44,7 @@ export default function SingleEventPage() {
                 <Heading title={event.title} description={event.description} />
                 <div className="space-y-2">
                     <div className="grid grid-cols-1 gap-4">
-                        <div className="grid grid-cols-4 gap-4">
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                             <Card>
                                 <CardContent className="flex flex-col gap-1">
                                     <span className="font-medium">Total de invitados</span>
@@ -74,7 +75,7 @@ export default function SingleEventPage() {
                                 <TableHeader className="bg-neutral-100">
                                     <TableRow>
                                         <TableHead className="w-[100px]">Name</TableHead>
-                                        <TableHead>Contact</TableHead>
+                                        {/* <TableHead>Contact</TableHead> */}
                                         <TableHead>Status</TableHead>
                                         <TableHead>Link</TableHead>
                                     </TableRow>
@@ -82,24 +83,25 @@ export default function SingleEventPage() {
                                 <TableBody>
                                     {guests.map((guest) => (
                                         <TableRow key={guest.id} className={guest.parent_guest_id == null ? 'bg-sky-200 hover:bg-sky-300' : ''} >
-                                            <TableCell className="font-medium">{guest.first_name} {guest.last_name}</TableCell>
-                                            <TableCell>
+                                            <TableCell className="font-medium">{guest.first_name} {guest.last_name} {guest.phone && (<br />)} {guest?.phone}</TableCell>
+                                            {/* <TableCell>
                                                 {guest.phone}
                                                 {guest.email && <br />}
                                                 {guest.email}
+                                            </TableCell> */}
+                                            
+                                            <TableCell>
+                                                {guest.is_attending == null ? <Badge>No respondió</Badge> : guest.is_attending ? <Badge className="bg-green-500">Asistirá</Badge> : <Badge className="bg-red-500">No asistirá</Badge>}
                                             </TableCell>
                                             <TableCell>
-                                                {guest.is_attending == null ? 'No respondió' : guest.is_attending ? 'Asistirá' : 'No asistirá'}
-                                            </TableCell>
-                                            <TableCell>
-                                                <div className="grid grid-cols-2 gap-3">
+                                                <div className="grid md:grid-cols-2  gap-3">
                                                     <Button onClick={() => handleCopy(`${window.location.origin}/invitation/guests/${guest.id}`)} variant={'outline'}>
                                                         Copy link
                                                     </Button>
                                                     {guest.phone && (
                                                         <a
                                                             href={`https://wa.me/+52${guest.phone.replace(/\D/g, '')}?text=${encodeURIComponent(
-                                                                `¡Hola! ${guest.first_name}, con la alegría en el corazón, te invitamos a compartir con nosotros el día en que uniremos nuestras vidas en matrimonio. 🤍 \n\n${window.location.origin}/invitation/guests/${guest.id}\n\nPor favor confírmanos si asistirás 😊`
+                                                                `¡Hola! ${guest.first_name}, con la alegría en el corazón, te invitamos a compartir con nosotros el día en que uniremos nuestras vidas en matrimonio. \n\n${window.location.origin}/invitation/guests/${guest.id}\n\nPor favor confírmanos si asistirás`
                                                             )}`}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
