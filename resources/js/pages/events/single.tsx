@@ -5,8 +5,10 @@ import { BreadcrumbItem } from "@/types";
 import { Head, Link, usePage } from "@inertiajs/react";
 import type { Event } from "@/types/event";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Card } from "@/components/ui/card";
 import { Guest } from "@/types/guest";
+import { toast } from "sonner";
+import { Card, CardContent } from "@/components/ui/card";
+import { ExternalLink } from "lucide-react";
 
 const breadcrumbs: BreadcrumbItem[] = [
     {
@@ -16,7 +18,22 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 export default function SingleEventPage() {
 
-    const { event, guests } = usePage<{ event: Event; guests: Guest[] }>().props;
+    const { event, guests, guestsCount, guestsAttendingCount, guestsNotAttendingCount } = usePage<{ event: Event; guests: Guest[]; guestsCount: number; guestsAttendingCount: number; guestsNotAttendingCount: number }>().props;
+    const handleCopy = (urlProvided: string) => {
+        const url = urlProvided;
+        navigator.clipboard.writeText(url)
+            .then(() => {
+                toast("Enlace copiado", {
+                    description: "La URL se ha copiado al portapapeles.",
+                })
+            })
+            .catch(() => {
+                toast("Error", {
+                    description: "No se pudo copiar el enlace.",
+                })
+            })
+    }
+
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -25,28 +42,36 @@ export default function SingleEventPage() {
 
                 <Heading title={event.title} description={event.description} />
                 <div className="space-y-2">
-                    <div className="grid grid-cols-4 gap-4">
-                        <div>
+                    <div className="grid grid-cols-1 gap-4">
+                        <div className="grid grid-cols-4 gap-4">
                             <Card>
-                                <div className="flex flex-col gap-2">
-                                    <div className="flex flex-col gap-2">
-                                        <span>Status</span>
-                                        <span>{event.status}</span>
-                                    </div>
-                                    {/* <div className="flex flex-col gap-2">
-                                        <span>Start date</span>
-                                        <span>{event.start_date.toDateString()}</span>
-                                    </div>
-                                    <div className="flex flex-col gap-2">
-                                        <span>End date</span>
-                                        <span>{event.end_date.toDateString()}</span>
-                                    </div> */}
-                                </div>
+                                <CardContent className="flex flex-col gap-1">
+                                    <span className="font-medium">Total de invitados</span>
+                                    <span className="text-neutral-500">{guestsCount}</span>
+                                </CardContent>
+                            </Card>
+                            <Card>
+                                <CardContent className="flex flex-col gap-1">
+                                    <span className="font-medium">Asistirán</span>
+                                    <span className="text-neutral-500">{guestsAttendingCount}</span>
+                                </CardContent>
+                            </Card>
+                            <Card>
+                                <CardContent className="flex flex-col gap-1">
+                                    <span className="font-medium">No asistirán</span>
+                                    <span className="text-neutral-500">{guestsNotAttendingCount}</span>
+                                </CardContent>
+                            </Card>
+                            <Card>
+                                <CardContent className="flex flex-col gap-1">
+                                    <span className="font-medium">Pendientes</span>
+                                    <span className="text-neutral-500">{guestsCount - guestsAttendingCount - guestsNotAttendingCount}</span>
+                                </CardContent>
                             </Card>
                         </div>
-                        <div className="col-span-3">
-                            <Table>
-                                <TableHeader>
+                        <div>
+                            <Table className="rounded overflow-hidden">
+                                <TableHeader className="bg-neutral-100">
                                     <TableRow>
                                         <TableHead className="w-[100px]">Name</TableHead>
                                         <TableHead>Contact</TableHead>
@@ -56,20 +81,35 @@ export default function SingleEventPage() {
                                 </TableHeader>
                                 <TableBody>
                                     {guests.map((guest) => (
-                                        <TableRow key={guest.id}>
+                                        <TableRow key={guest.id} className={guest.parent_guest_id == null ? 'bg-sky-200 hover:bg-sky-300' : ''} >
                                             <TableCell className="font-medium">{guest.first_name} {guest.last_name}</TableCell>
                                             <TableCell>
-                                                {guest.email}
-                                                {guest.phone && <br />}
                                                 {guest.phone}
+                                                {guest.email && <br />}
+                                                {guest.email}
                                             </TableCell>
                                             <TableCell>
-                                                {guest.is_attending == null ? 'Not responded' : guest.is_attending ? 'Attending' : 'Not attending'}
+                                                {guest.is_attending == null ? 'No respondió' : guest.is_attending ? 'Asistirá' : 'No asistirá'}
                                             </TableCell>
                                             <TableCell>
-                                                <Link href={`/invitation/guests/${guest.id}`}>
-                                                    View invitation
-                                                </Link>
+                                                <div className="grid grid-cols-2 gap-3">
+                                                    <Button onClick={() => handleCopy(`${window.location.origin}/invitation/guests/${guest.id}`)} variant={'outline'}>
+                                                        Copy link
+                                                    </Button>
+                                                    {guest.phone && (
+                                                        <a
+                                                            href={`https://wa.me/+52${guest.phone.replace(/\D/g, '')}?text=${encodeURIComponent(
+                                                                `¡Hola! ${guest.first_name}, con la alegría en el corazón, te invitamos a compartir con nosotros el día en que uniremos nuestras vidas en matrimonio. 🤍 \n\n${window.location.origin}/invitation/guests/${guest.id}\n\nPor favor confírmanos si asistirás 😊`
+                                                            )}`}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                        >
+                                                            <Button variant="secondary" className="w-full">
+                                                                WhatsApp <ExternalLink className="w-4 h-4 ml-1" />
+                                                            </Button>
+                                                        </a>
+                                                    )}
+                                                </div>
                                             </TableCell>
                                         </TableRow>
                                     ))}

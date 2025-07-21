@@ -44,9 +44,18 @@ class EventController extends Controller
     {
         // get guests 
         $guests = $event->guests;
+
+        // counters
+        $guestsCount = $guests->count();
+        $guestsAttendingCount = $guests->whereStrict('is_attending', 1)->count();
+        $guestsNotAttendingCount = $guests->whereStrict('is_attending', 0)->count();
+
         return Inertia::render('events/single', [
             'event' => $event,
-            'guests' => $guests
+            'guests' => $guests,
+            'guestsCount' => $guestsCount,
+            'guestsAttendingCount' => $guestsAttendingCount,
+            'guestsNotAttendingCount' => $guestsNotAttendingCount,
         ]);
     }
 
