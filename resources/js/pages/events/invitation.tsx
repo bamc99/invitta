@@ -1,10 +1,74 @@
 import AudioPlayer from '@/components/generic/player';
+import InputError from '@/components/input-error';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Label } from '@/components/ui/label';
+import { Switch } from '@/components/ui/switch';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Guest } from '@/types/guest';
-import { usePage } from '@inertiajs/react';
-import { Mail } from 'lucide-react';
+import { useForm, usePage } from '@inertiajs/react';
+import { Check, Mail } from 'lucide-react';
+import { FormEventHandler, useEffect, useRef, useState } from 'react';
 
 export default function SingleInvite() {
     const { guest } = usePage<{ guest: Guest }>().props;
+    const { post, setData, errors } = useForm();
+    const [confirmations, setConfirmations] = useState<{ id: number, is_attending: boolean }[]>([]);
+    const [open, setOpen] = useState(false);
+
+    const handleCheckboxChange = (id: number, checked: boolean) => {
+        setConfirmations((prev) => {
+            const updated = [...prev];
+            const index = updated.findIndex((item) => item.id === id);
+            if (index > -1) {
+                updated[index].is_attending = checked;
+            } else {
+                updated.push({ id, is_attending: checked });
+            }
+            setData('confirmations', confirmations);
+            return updated;
+        });
+    };
+    const initialized = useRef(false);
+    useEffect(() => {
+        console.log('useeffect fired');
+        console.log('status', initialized);
+        if (!initialized.current && guest) {
+            const updatedConfirmations = [
+                { id: guest.id, is_attending: guest?.is_attending ?? false },
+                ...(guest.guests ?? []).map((g) => ({
+                    id: g.id,
+                    is_attending: g?.is_attending ?? false,
+                })),
+            ];
+
+            setConfirmations(updatedConfirmations);
+            setData('confirmations', updatedConfirmations);
+            initialized.current = true;
+        }
+    }, [guest]);
+
+    const submit: FormEventHandler = (e) => {
+        e.preventDefault();
+        post(route('guests.confirmations'));
+    };
+
+    if (!guest) {
+        return null;
+    }
+    if (!guest.is_attending && guest.is_attending !== null) {
+        // la invitación caducó
+        return (
+            <div className="flex flex-col items-center gap-4 px-5 py-10 text-black max-w-lg mx-auto">
+                <div>
+                    <TitleItalic>{`Hola ${guest?.first_name},`}</TitleItalic>
+                    <TitleItalic>
+                        lamentamos que no puedas asistir a nuestro boda.
+                    </TitleItalic>
+                </div>
+            </div>
+        )
+    }
 
     return (
         <>
@@ -21,7 +85,7 @@ export default function SingleInvite() {
                         <AudioPlayer />
                     </div>
                 </div>
-                <div className="flex flex-col items-center gap-4 px-5 py-10 text-black">
+                <div className="flex flex-col items-center gap-4 px-5 py-10 text-black max-w-lg mx-auto">
                     <div>
                         <TitleItalic>{`Hola ${guest?.first_name},`}</TitleItalic>
                         <TitleItalic>
@@ -50,8 +114,105 @@ export default function SingleInvite() {
                         </div>
                     </div>
                     <div>
+                        <Dialog open={open} onOpenChange={setOpen}>
+                            <DialogTrigger asChild>
+                                <Button className="w-full" onClick={() => setOpen(true)}>
+                                    <TitleItalic>
+                                        Confirmar asistencia
+                                    </TitleItalic>
+                                </Button>
+                            </DialogTrigger>
+                            <DialogContent>
+                                <DialogHeader>
+                                    <DialogTitle>
+                                        Confirmar asistencia
+                                    </DialogTitle>
+                                    <DialogDescription>
+                                        Por favor, confirma tu asistencia antes del 27 de Julio. Si tienes alguna pregunta, no dudes en contactarnos.
+                                    </DialogDescription>
+                                </DialogHeader>
+                                {
+                                    guest.is_attending ? (
+                                        <div className='text-center py-2'>
+                                            <Check className='text-green-600 mx-auto' size={48} />
+                                            <TitleItalic className='text-xl'>
+                                                Ya confirmaste tu asistencia
+                                            </TitleItalic>
+                                        </div>
+                                    ) : (
+                                        <>
+                                            <p>Selecciona las personas que podrán asistir</p>
+                                            <form onSubmit={submit}>
+                                                <Table>
+                                                    <TableHeader>
+                                                        <TableRow>
+                                                            <TableHead>Nombre</TableHead>
+                                                            <TableHead className='text-center'>Asistirá</TableHead>
+                                                        </TableRow>
+                                                    </TableHeader>
+                                                    <TableBody>
+                                                        <TableRow>
+                                                            <TableCell className='text-start'>
+                                                                <Label htmlFor={`confirm-${guest.id}`}>
+                                                                    {guest.first_name} {guest.last_name}
+                                                                </Label>
+                                                            </TableCell>
+                                                            <TableCell className='text-center'>
+                                                                <Switch
+                                                                    checked={
+                                                                        confirmations.find((c) => c.id === guest.id)?.is_attending ?? false
+                                                                    }
+                                                                    className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-destructive"
+                                                                    id={`confirm-${guest.id}`}
+                                                                    onCheckedChange={(checked) =>
+                                                                        handleCheckboxChange(guest.id, !!checked)
+                                                                    }
+                                                                />
+                                                            </TableCell>
+                                                        </TableRow>
+                                                        {(guest?.guests ?? []).map((guest) => (
+                                                            <TableRow key={guest.id}>
+                                                                <TableCell className='text-start'>
+                                                                    <Label htmlFor={`confirm-${guest.id}`}>
+                                                                        {guest.first_name} {guest.last_name}
+                                                                    </Label>
+                                                                </TableCell>
+                                                                <TableCell className='text-center'>
+                                                                    {/* <Checkbox id={`confirm-${guest.id}`} onCheckedChange={(checked) => handleCheckboxChange(guest.id, !!checked)} /> */}
+                                                                    <Switch
+                                                                        checked={
+                                                                            confirmations.find((c) => c.id === guest.id)?.is_attending ?? false
+                                                                        }
+                                                                        className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-destructive"
+                                                                        id={`confirm-${guest.id}`}
+                                                                        onCheckedChange={(checked) =>
+                                                                            handleCheckboxChange(guest.id, !!checked)
+                                                                        }
+                                                                    />
+                                                                </TableCell>
+                                                            </TableRow>
+                                                        ))}
+                                                    </TableBody>
+                                                </Table>
+                                                <DialogFooter>
+                                                    <DialogClose asChild>
+                                                        <Button variant="outline">Cancelar</Button>
+                                                    </DialogClose>
+                                                    {Object.values(errors).map((message, i) => (
+                                                        <InputError key={i} message={message} className="mt-2" />
+                                                    ))}
+                                                    <Button type='submit'>Enviar confirmaciones</Button>
+                                                </DialogFooter>
+                                            </form>
+                                        </>
+                                    )
+                                }
+                            </DialogContent>
+                        </Dialog>
+                    </div>
+                    <div>
                         <TitleSans>EVENTO EXCLUSIVO PARA ADULTOS</TitleSans>
-                        <p className="text-center text-sm">por favor confirma tu asistencia antes del 23 de Julio</p>
+                        <p className="text-center text-sm">por favor confirma tu asistencia antes del 27 de Julio</p>
                     </div>
                     <div>
                         <GradientImage src="/images/nosotros.png" vertical />
@@ -63,12 +224,12 @@ export default function SingleInvite() {
     );
 }
 
-const TitleSans = ({ children }: { children: string }) => {
-    return <h5 className="text-center font-luna">{children}</h5>;
+const TitleSans = ({ children, className }: { children: string; className?: string }) => {
+    return <h5 className={`text-center font-luna ${className}`}>{children}</h5>;
 };
 
-const TitleItalic = ({ children }: { children: string }) => {
-    return <p className="text-center font-italic">{children}</p>;
+const TitleItalic = ({ children, className }: { children: string; className?: string }) => {
+    return <p className={`text-center font-italic ${className}`}>{children}</p>;
 };
 
 const GradientImage = ({ src, vertical }: { src: string; vertical?: boolean }) => {

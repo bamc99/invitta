@@ -44,6 +44,7 @@ Route::get('invites', function () {
 
 // /events/invitation/guests/
 Route::get('invitation/guests/{guest}', [GuestController::class, 'invitation'])->name('invites.guests');
+Route::post('guests/confirmations', [GuestController::class, 'confirmations'])->name('guests.confirmations');
 
 require __DIR__.'/settings.php';
 require __DIR__.'/auth.php';

@@ -12,7 +12,7 @@ class Guest extends Model
     // event relation
     public function event()
     {
-        return $this->belongsTo('App\Models\Event');
+        return $this->belongsTo(Event::class);
     }
 
     public function guests() // hijos

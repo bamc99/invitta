@@ -5,8 +5,10 @@ export interface Guest {
     email:           string;
     phone:           string;
     event_id:        number;
-    parent_guest_id: null;
-    is_attending:    null;
-    created_at:      string;
-    updated_at:      string;
+    parent_guest_id: number | null;
+    is_attending:    null | boolean;
+    created_at:      Date;
+    updated_at:      Date;
+    guests?:         Guest[];
+    event?:          Event;
 }

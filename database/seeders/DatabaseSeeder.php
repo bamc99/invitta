@@ -27,6 +27,10 @@ class DatabaseSeeder extends Seeder
             Guest::factory(10)->create([
                 'event_id' => $event->id,
             ]);
+            Guest::factory(5)->create([
+                'event_id' => $event->id,
+                'parent_guest_id' => rand(1, 10),
+            ]);
         }
     }
 }

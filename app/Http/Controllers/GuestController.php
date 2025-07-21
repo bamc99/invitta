@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreGuestRequest;
 use App\Http\Requests\UpdateGuestRequest;
 use App\Models\Guest;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class GuestController extends Controller
@@ -41,12 +42,31 @@ class GuestController extends Controller
         //
     }
 
-    public function invitation(Guest $guest){
+    public function invitation(Guest $guest)
+    {
 
+        $guest->load('guests', 'event'); // <-- Asegúrate de cargar 'guests'
         return Inertia::render('events/invitation', [
             'guest' => $guest,
             'event' => $guest->event,
         ]);
+    }
+
+    public function confirmations(Request $request)
+    {
+        $data = $request->validate([
+            'confirmations' => 'required|array',
+            'confirmations.*.id' => 'required|exists:guests,id',
+            'confirmations.*.is_attending' => 'required|boolean',
+        ]);
+
+        foreach ($data['confirmations'] as $confirmation) {
+            Guest::where('id', $confirmation['id'])->update([
+                'is_attending' => $confirmation['is_attending'],
+            ]);
+        }
+
+        return redirect()->back()->with('success', 'Confirmación registrada.');
     }
 
     /**
