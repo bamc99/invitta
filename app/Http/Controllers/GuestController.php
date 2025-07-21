@@ -44,11 +44,11 @@ class GuestController extends Controller
 
     public function invitation(Guest $guest)
     {
-
         $guest->load('guests', 'event'); // <-- Asegúrate de cargar 'guests'
         return Inertia::render('events/invitation', [
             'guest' => $guest,
             'event' => $guest->event,
+            'appUrl' => config('app.url')
         ]);
     }
 
