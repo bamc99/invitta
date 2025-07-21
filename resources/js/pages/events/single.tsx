@@ -101,7 +101,7 @@ export default function SingleEventPage() {
                                                     {guest.phone && (
                                                         <a
                                                             href={`https://wa.me/+52${guest.phone.replace(/\D/g, '')}?text=${encodeURIComponent(
-                                                                `¡Hola! ${guest.first_name}, con la alegría en el corazón, te invitamos a compartir con nosotros el día en que uniremos nuestras vidas en matrimonio. \n\n${window.location.origin}/invitation/guests/${guest.id}\n\nPor favor confírmanos si asistirás`
+                                                                `¡Hola! ${guest.first_name}, con la alegría en el corazón, te invitamos a compartir con nosotros el día en que uniremos nuestras vidas en matrimonio. 🤍 \n\n${window.location.origin}/invitation/guests/${guest.id}\n\nPor favor confírmanos si asistirás 😊`
                                                             )}`}
                                                             target="_blank"
                                                             rel="noopener noreferrer"

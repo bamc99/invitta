@@ -65,7 +65,7 @@ export default function SingleInvite() {
                 <div>
                     <TitleItalic>{`Hola ${guest?.first_name},`}</TitleItalic>
                     <TitleItalic>
-                        lamentamos que no puedas asistir a nuestro boda.
+                        lamentamos que no puedas asistir a nuestra boda.
                     </TitleItalic>
                 </div>
             </div>
