@@ -79,17 +79,16 @@ export default function SingleInvite() {
             <main className="bg-[#fffefa]">
                 <div className="relative flex min-h-[80dvh] flex-col justify-between overflow-hidden rounded-b-4xl bg-[url('/cover_1.jpg')] bg-cover bg-center p-10">
                     <div className="absolute inset-0 z-0 bg-gradient-to-b from-black via-transparent to-black opacity-70" />
-                    <div className="z-10 flex flex-col items-center text-[#fff5e9] font-luxes">
+                    <div className="z-10 flex flex-col items-center text-[#fff5e9] font-luxes gap-2">
                         <h5 className="text-3xl">Wedding Day</h5>
                         <h4 className="text-3xl">13/09/25</h4>
-                        <span className="my-2"></span>
                         <h3 className="text-2xl font-medium">Yazmin & Bruno</h3>
                     </div>
                     <div className="z-10 mx-auto w-[60%]">
                         <AudioPlayer />
                     </div>
                 </div>
-                <div className="flex flex-col items-center gap-4 px-5 py-10 text-black max-w-lg mx-auto">
+                <div className="flex flex-col items-center gap-4 px-5 py-5 text-black max-w-lg mx-auto">
                     <div>
                         <TitleItalic>{`Hola ${guest?.first_name},`}</TitleItalic>
                         <TitleItalic>
@@ -110,6 +109,8 @@ export default function SingleInvite() {
                     <div>
                         <GradientImage src="/images/vestimenta.png" vertical />
                         <TitleSans>Código de vestimenta: Formal</TitleSans>
+                    </div>
+                    <div className='mt-5'>
                         <div className="text-center">
                             <TitleItalic>
                                 Tu compañía lo es todo para nosotros, pero si gustas obsequiarnos algo, un sobre será bien recibido
@@ -118,9 +119,12 @@ export default function SingleInvite() {
                         </div>
                     </div>
                     <div>
+                        <TitleSans>EVENTO EXCLUSIVO PARA ADULTOS</TitleSans>
+                    </div>
+                    <div>
                         <Dialog open={open} onOpenChange={setOpen}>
                             <DialogTrigger asChild>
-                                <Button className="w-full" onClick={() => setOpen(true)}>
+                                <Button variant={'outline'} className='border border-black' onClick={() => setOpen(true)}>
                                     <TitleItalic>
                                         Confirmar asistencia
                                     </TitleItalic>
@@ -215,11 +219,9 @@ export default function SingleInvite() {
                         </Dialog>
                     </div>
                     <div>
-                        <TitleSans>EVENTO EXCLUSIVO PARA ADULTOS</TitleSans>
-                        <p className="text-center text-sm">por favor confirma tu asistencia antes del 27 de Julio</p>
+                        <GradientImage src="/images/nosotros.png" vertical />
                     </div>
                     <div>
-                        <GradientImage src="/images/nosotros.png" vertical />
                         <TitleItalic>Con especial gratitud a Leslie y Cecilia Gómez por su apoyo en hacer este día posible.</TitleItalic>
                     </div>
                 </div>
