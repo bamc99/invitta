@@ -2,7 +2,7 @@ import Heading from "@/components/heading";
 import { Button } from "@/components/ui/button";
 import AppLayout from "@/layouts/app-layout";
 import { BreadcrumbItem } from "@/types";
-import { Head, Link, usePage } from "@inertiajs/react";
+import { Head, Link, usePage, usePoll } from "@inertiajs/react";
 import type { Event } from "@/types/event";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Guest } from "@/types/guest";
@@ -34,6 +34,8 @@ export default function SingleEventPage() {
                 })
             })
     }
+    usePoll(2000)
+
 
 
     return (
@@ -89,7 +91,7 @@ export default function SingleEventPage() {
                                                 {guest.email && <br />}
                                                 {guest.email}
                                             </TableCell> */}
-                                            
+
                                             <TableCell>
                                                 {guest.is_attending == null ? <Badge>No respondió</Badge> : guest.is_attending ? <Badge className="bg-green-500">Asistirá</Badge> : <Badge className="bg-red-500">No asistirá</Badge>}
                                             </TableCell>
