@@ -142,7 +142,7 @@ export default function SingleInvite() {
                                         Confirmar asistencia
                                     </DialogTitle>
                                     <DialogDescription>
-                                        Por favor, confirma tu asistencia antes del 27 de Julio. Si tienes alguna pregunta, no dudes en contactarnos.
+                                        Por favor, confirma tu asistencia antes del 3 de Agosto. Si tienes alguna pregunta, no dudes en contactarnos.
                                     </DialogDescription>
                                 </DialogHeader>
                                 {
@@ -176,9 +176,9 @@ export default function SingleInvite() {
                                                                     checked={
                                                                         confirmations.find((c) => c.id === guest.id)?.is_attending ?? false
                                                                     }
-                                                                    className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+                                                                    className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500 dark:data-[state=checked]:bg-green-500 dark:data-[state=unchecked]:bg-red-500"
                                                                     id={`confirm-${guest.id}`}
-                                                                    onCheckedChange={(checked) =>
+                                                                    onCheckedChange={(checked: boolean) =>
                                                                         handleCheckboxChange(guest.id, !!checked)
                                                                     }
                                                                 />
@@ -197,9 +197,9 @@ export default function SingleInvite() {
                                                                         checked={
                                                                             confirmations.find((c) => c.id === guest.id)?.is_attending ?? false
                                                                         }
-                                                                        className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500"
+                                                                        className="data-[state=checked]:bg-green-500 data-[state=unchecked]:bg-red-500 dark:data-[state=checked]:bg-green-500 dark:data-[state=unchecked]:bg-red-500"
                                                                         id={`confirm-${guest.id}`}
-                                                                        onCheckedChange={(checked) =>
+                                                                        onCheckedChange={(checked: boolean) =>
                                                                             handleCheckboxChange(guest.id, !!checked)
                                                                         }
                                                                     />
