@@ -8,6 +8,14 @@ export default function SingleInvite() {
     const invitationUrl = `${appUrl}/after-invitation`;
     const image = `${appUrl}/meta_after_cover.webp`;
 
+    //obtener get params song=1 o 2
+    const urlParams = new URLSearchParams(window.location.search);
+    const songParam = urlParams.get('song');
+    let song = '/song_after.mp3';
+    if (songParam === '2') {
+        song = '/song_perreo.mp3';
+    }
+
     return (
         <>
             <HeaderTags invitationUrl={invitationUrl} cover={image} />
@@ -20,7 +28,7 @@ export default function SingleInvite() {
                         <h3 className="text-2xl font-medium">Yazmin & Bruno</h3>
                     </div>
                     <div className="z-10 mx-auto w-[60%]">
-                        <AudioPlayer customSong='/song_after.mp3'/>
+                        <AudioPlayer customSong={`${song ?? '/song_after.mp3'}`}/>
                     </div>
                 </div>
                 <div className="mx-auto flex max-w-lg flex-col items-center gap-4 px-5 py-5 text-black">
