@@ -9,16 +9,14 @@ export default function SingleInvite() {
     const invitationUrl = `${appUrl}/after-invitation`;
     const image = `${appUrl}/cover_resized.jpg`;
 
-    const [open, setOpen] = useState(false);
-
     return (
         <>
             <HeaderTags invitationUrl={invitationUrl} cover={image} />
             <main className="bg-[#fffefa]">
-                <div className="relative flex min-h-[80dvh] flex-col justify-between overflow-hidden rounded-b-4xl bg-[url('/cover_1.jpg')] bg-cover bg-center p-10">
+                <div className="relative flex min-h-[80dvh] flex-col justify-between overflow-hidden rounded-b-4xl bg-[url('/images/after/after-cover.jpeg')] bg-cover bg-center p-10">
                     <div className="absolute inset-0 z-0 bg-gradient-to-b from-black via-transparent to-black opacity-70" />
                     <div className="z-10 flex flex-col items-center gap-2 font-luxes text-[#fff5e9]">
-                        <h5 className="text-3xl">Wedding Day</h5>
+                        <h5 className="text-3xl">After Party</h5>
                         <h4 className="text-3xl">13/09/25</h4>
                         <h3 className="text-2xl font-medium">Yazmin & Bruno</h3>
                     </div>
@@ -34,12 +32,12 @@ export default function SingleInvite() {
                     <div>
                         <br />
                         <TitleSans>Sábado, 13 de Septiembre, 2025</TitleSans>
-                        <GradientImage src="/images/anillos.jpg" />
+                        <GradientImage src="/images/after/after-clock.png" />
                         <TitleSans>Hora: 7:00 PM</TitleSans>
                         <TitleItalic>los esperamos con gusto</TitleItalic>
                     </div>
                     <div className='text-center'>
-                        <GradientImage src="/images/lugar.png" />
+                        <GradientImage src="/images/after/after-place.jpeg" />
                         <TitleSans>LUGAR: QUINTA NOGALITO</TitleSans>
                         <TitleItalic>Portal del Norte, Chabacano #1804</TitleItalic>
                         <Button className="border border-black my-4" asChild>
@@ -49,12 +47,12 @@ export default function SingleInvite() {
                         </Button>
                     </div>
                     <div>
-                        <GradientImage src="/images/vestimenta.png" vertical />
+                        <GradientImage src="/images/after/after-dress.png" vertical />
                         <TitleSans>Dress code: Formal casual</TitleSans>
                         <TitleItalic>¡Recuerda llevar zapatos cómodos!</TitleItalic>
                     </div>
                     <div>
-                        <GradientImage src="/images/after.png" vertical />
+                        <GradientImage src="/images/after/after-drinks.png" vertical />
                         <div className="my-2"></div>
                         <TitleSans>BARRA LIBRE desde las 9:30 pm</TitleSans>
                         <TitleItalic>¡NO incluye cerveza! Si gustas, lleva la tuya en lata.</TitleItalic>
