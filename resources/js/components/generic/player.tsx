@@ -2,7 +2,11 @@ import { PauseIcon, PlayIcon } from 'lucide-react';
 import { useRef, useState, useEffect } from 'react';
 // import song from './assets/audio/song.mp3';
 
-export default function AudioPlayer() {
+export default function AudioPlayer({
+  customSong,
+}: {
+  customSong?: string;
+}) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -39,7 +43,7 @@ export default function AudioPlayer() {
 
   return (
     <div className="w-full max-w-md mx-auto p-4 rounded flex gap-1">
-      <audio ref={audioRef} src={'/song.mp3'} preload="auto" />
+      <audio ref={audioRef} src={customSong ?? '/song.mp3'} preload="auto" />
       
       <button
         onClick={togglePlay}

@@ -20,12 +20,12 @@ export default function SingleInvite() {
                         <h3 className="text-2xl font-medium">Yazmin & Bruno</h3>
                     </div>
                     <div className="z-10 mx-auto w-[60%]">
-                        <AudioPlayer />
+                        <AudioPlayer customSong='/song_after.mp3'/>
                     </div>
                 </div>
                 <div className="mx-auto flex max-w-lg flex-col items-center gap-4 px-5 py-5 text-black">
                     <div>
-                        <TitleItalic>{`¡Hola!,`}</TitleItalic>
+                        <TitleItalic nobr>¡Hola!, </TitleItalic>
                         <TitleItalic>queremos seguir celebrando con ustedes este día tan especial. ¡after obligatorio!</TitleItalic>
                     </div>
                     <div>
@@ -76,11 +76,14 @@ export default function SingleInvite() {
 }
 
 const TitleSans = ({ children, className }: { children: string; className?: string }) => {
-    return <h5 className={`text-center font-luna ${className}`}>{children}</h5>;
+    return <><h5 className={`text-center font-luna ${className}`}>{children}</h5></>;
 };
 
-const TitleItalic = ({ children, className }: { children: string; className?: string }) => {
-    return <p className={`text-center font-italic ${className}`}>{children}</p>;
+const TitleItalic = ({ children, className, nobr }: { children: string; className?: string; nobr?: boolean; }) => {
+    return <>
+        <p className={`text-center font-italic ${className}`}>{children}</p>
+        {!nobr && <br />}
+    </>;
 };
 
 const GradientImage = ({ src, vertical }: { src: string; vertical?: boolean }) => {
