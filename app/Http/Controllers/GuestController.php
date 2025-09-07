@@ -63,9 +63,9 @@ class GuestController extends Controller
         return Inertia::render('events/after-invitation', [
             'appUrl' => config('app.url'),
             'meta' => [
-                'title' => "Yaz & Bruno - Invitación para al after civil",
+                'title' => "Yaz & Bruno - Invitación para el after",
                 'description' => 'Acompáñanos en un día muy especial: nuestra boda el 13 de Septiembre de 2025.',
-                'image' => asset('meta_cover.webp'),
+                'image' => asset('meta_after_cover.webp'),
                 'url' => route('after-invitation'),
             ],
         ]);

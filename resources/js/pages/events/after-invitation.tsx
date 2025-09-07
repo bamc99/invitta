@@ -2,12 +2,11 @@ import AudioPlayer from '@/components/generic/player';
 import { Button } from '@/components/ui/button';
 import { Head, usePage } from '@inertiajs/react';
 import { Mail } from 'lucide-react';
-import { useState } from 'react';
 
 export default function SingleInvite() {
     const { appUrl } = usePage<{ appUrl: string }>().props;
     const invitationUrl = `${appUrl}/after-invitation`;
-    const image = `${appUrl}/cover_resized.jpg`;
+    const image = `${appUrl}/meta_after_cover.webp`;
 
     return (
         <>
@@ -102,7 +101,7 @@ const GradientImage = ({ src, vertical }: { src: string; vertical?: boolean }) =
 const HeaderTags = ({ invitationUrl, cover }: { invitationUrl: string; cover: string }) => {
     return (
         <Head title={`Invitación al after`}>
-            <meta name="description" content="Acompáñanos en un día muy especial: nuestra boda el 13 de Septiembre de 2025." />
+            <meta name="description" content="Acompáñanos en un día muy especial: nuestro after el 13 de Septiembre de 2025." />
 
             {/* Open Graph para WhatsApp / Facebook */}
             <meta property="og:title" content="Yazmin & Bruno - Invitación de boda" />
